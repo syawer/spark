@@ -356,8 +356,8 @@ class PairDStreamFunctions[K, V](self: DStream[(K, V)])
    * Return a [[MapWithStateDStream]] by applying a function to every key-value element of
    * `this` stream, while maintaining some state data for each unique key. The mapping function
    * and other specification (e.g. partitioners, timeouts, initial state data, etc.) of this
-   * transformation can be specified using [[StateSpec]] class. The state data is accessible in
-   * as a parameter of type [[State]] in the mapping function.
+   * transformation can be specified using `StateSpec` class. The state data is accessible in
+   * as a parameter of type `State` in the mapping function.
    *
    * Example of using `mapWithState`:
    * {{{
@@ -389,6 +389,7 @@ class PairDStreamFunctions[K, V](self: DStream[(K, V)])
   /**
    * Return a new "state" DStream where the state for each key is updated by applying
    * the given function on the previous state of the key and the new values of each key.
+   * In every batch the updateFunc will be called for each state even if there are no new values.
    * Hash partitioning is used to generate the RDDs with Spark's default number of partitions.
    * @param updateFunc State update function. If `this` function returns None, then
    *                   corresponding state key-value pair will be eliminated.
@@ -403,6 +404,7 @@ class PairDStreamFunctions[K, V](self: DStream[(K, V)])
   /**
    * Return a new "state" DStream where the state for each key is updated by applying
    * the given function on the previous state of the key and the new values of each key.
+   * In every batch the updateFunc will be called for each state even if there are no new values.
    * Hash partitioning is used to generate the RDDs with `numPartitions` partitions.
    * @param updateFunc State update function. If `this` function returns None, then
    *                   corresponding state key-value pair will be eliminated.
@@ -419,6 +421,7 @@ class PairDStreamFunctions[K, V](self: DStream[(K, V)])
   /**
    * Return a new "state" DStream where the state for each key is updated by applying
    * the given function on the previous state of the key and the new values of the key.
+   * In every batch the updateFunc will be called for each state even if there are no new values.
    * [[org.apache.spark.Partitioner]] is used to control the partitioning of each RDD.
    * @param updateFunc State update function. If `this` function returns None, then
    *                   corresponding state key-value pair will be eliminated.
@@ -440,6 +443,7 @@ class PairDStreamFunctions[K, V](self: DStream[(K, V)])
   /**
    * Return a new "state" DStream where the state for each key is updated by applying
    * the given function on the previous state of the key and the new values of each key.
+   * In every batch the updateFunc will be called for each state even if there are no new values.
    * [[org.apache.spark.Partitioner]] is used to control the partitioning of each RDD.
    * @param updateFunc State update function. Note, that this function may generate a different
    *                   tuple with a different key than the input key. Therefore keys may be removed
@@ -464,6 +468,7 @@ class PairDStreamFunctions[K, V](self: DStream[(K, V)])
   /**
    * Return a new "state" DStream where the state for each key is updated by applying
    * the given function on the previous state of the key and the new values of the key.
+   * In every batch the updateFunc will be called for each state even if there are no new values.
    * org.apache.spark.Partitioner is used to control the partitioning of each RDD.
    * @param updateFunc State update function. If `this` function returns None, then
    *                   corresponding state key-value pair will be eliminated.
@@ -487,6 +492,7 @@ class PairDStreamFunctions[K, V](self: DStream[(K, V)])
   /**
    * Return a new "state" DStream where the state for each key is updated by applying
    * the given function on the previous state of the key and the new values of each key.
+   * In every batch the updateFunc will be called for each state even if there are no new values.
    * org.apache.spark.Partitioner is used to control the partitioning of each RDD.
    * @param updateFunc State update function. Note, that this function may generate a different
    *                   tuple with a different key than the input key. Therefore keys may be removed
@@ -513,6 +519,7 @@ class PairDStreamFunctions[K, V](self: DStream[(K, V)])
   /**
    * Return a new "state" DStream where the state for each key is updated by applying
    * the given function on the previous state of the key and the new values of the key.
+   * In every batch the updateFunc will be called for each state even if there are no new values.
    * org.apache.spark.Partitioner is used to control the partitioning of each RDD.
    * @param updateFunc State update function. If `this` function returns None, then
    *                   corresponding state key-value pair will be eliminated.

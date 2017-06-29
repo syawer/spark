@@ -68,7 +68,7 @@ trait QueryExecutionListener {
 /**
  * :: Experimental ::
  *
- * Manager for [[QueryExecutionListener]]. See [[org.apache.spark.sql.SQLContext.listenerManager]].
+ * Manager for [[QueryExecutionListener]]. See `org.apache.spark.sql.SQLContext.listenerManager`.
  */
 @Experimental
 @InterfaceStability.Evolving
@@ -96,6 +96,16 @@ class ExecutionListenerManager private[sql] () extends Logging {
   @DeveloperApi
   def clear(): Unit = writeLock {
     listeners.clear()
+  }
+
+  /**
+   * Get an identical copy of this listener manager.
+   */
+  @DeveloperApi
+  override def clone(): ExecutionListenerManager = writeLock {
+    val newListenerManager = new ExecutionListenerManager
+    listeners.foreach(newListenerManager.register)
+    newListenerManager
   }
 
   private[sql] def onSuccess(funcName: String, qe: QueryExecution, duration: Long): Unit = {
